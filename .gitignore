@@ -1,0 +1,9 @@
+# Ignore everything in parent directories
+../*
+../../*
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.DS_Store
