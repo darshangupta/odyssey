@@ -4,9 +4,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-your-secret-key'  # Generate a new one for production!
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -59,7 +59,7 @@ DATABASES = {
 }
 
 # MongoDB settings (separate from Django's auth system)
-MONGODB_URI = 'mongodb://localhost:27017/'
+MONGODB_URI = "mongodb+srv://OdysseyUser:testpass@odysseysamplecluster.elyfw.mongodb.net/?retryWrites=true&w=majority&ssl=true"
 MONGODB_NAME = 'odyssey_db'
 
 AUTH_PASSWORD_VALIDATORS = [
