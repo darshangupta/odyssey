@@ -6,10 +6,10 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),  # Handles admin URLs
     # JWT authentication endpoints
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    # Include API URLs
-    path('api/', include('odyssey.api.urls')),
+    # Include all API routes
+    path('api/', include('api.urls')),  # Forwards all /api/ requests to api/urls.py
 ]

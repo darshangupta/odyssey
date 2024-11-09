@@ -11,7 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-# Update this line to match your settings path
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "odyssey.odyssey.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "odyssey.settings")
 
 application = get_wsgi_application()

@@ -2,26 +2,15 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from .mongodb import get_db, serialize_mongodb_object
 from datetime import datetime
 from .validators import *
 from typing import List, Dict
 import asyncio
-import logging
 
-logger = logging.getLogger(__name__)
-
-class BaseViewSet(viewsets.ViewSet):
-    authentication_classes = [JWTAuthentication]
+class TrialViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
-    def initial(self, request, *args, **kwargs):
-        logger.debug(f"Request headers: {request.headers}")
-        logger.debug(f"User: {request.user}")
-        super().initial(request, *args, **kwargs)
-
-class TrialViewSet(BaseViewSet):
     def list(self, request):
         """GET /api/trials/"""
         db = get_db()
@@ -96,7 +85,9 @@ class TrialViewSet(BaseViewSet):
         updated_trial = db.trials.find_one({'trial_id': pk})
         return Response(serialize_mongodb_object(updated_trial))
 
-class PatientViewSet(BaseViewSet):
+class PatientViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
     def list(self, request):
         """GET /api/patients/"""
         db = get_db()
@@ -122,7 +113,9 @@ class PatientViewSet(BaseViewSet):
         created_patient = db.patients.find_one({'_id': result.inserted_id})
         return Response(serialize_mongodb_object(created_patient), status=status.HTTP_201_CREATED)
 
-class SiteViewSet(BaseViewSet):
+class SiteViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
     def list(self, request):
         """GET /api/sites/"""
         db = get_db()
@@ -150,7 +143,9 @@ class SiteViewSet(BaseViewSet):
             return Response({'error': 'Site not found'}, status=status.HTTP_404_NOT_FOUND)
         return Response(serialize_mongodb_object(site.get('associated_kits', {})))
 
-class AddressViewSet(BaseViewSet):
+class AddressViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
     def list(self, request):
         """GET /api/addresses/"""
         db = get_db()
@@ -176,7 +171,9 @@ class AddressViewSet(BaseViewSet):
         created_address = db.addresses.find_one({'_id': result.inserted_id})
         return Response(serialize_mongodb_object(created_address))
 
-class ContactPersonViewSet(BaseViewSet):
+class ContactPersonViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
     def list(self, request):
         """GET /api/contact-persons/"""
         db = get_db()
@@ -193,7 +190,9 @@ class ContactPersonViewSet(BaseViewSet):
         created_contact = db.contact_persons.find_one({'_id': result.inserted_id})
         return Response(serialize_mongodb_object(created_contact), status=status.HTTP_201_CREATED)
 
-class ShipmentViewSet(BaseViewSet):
+class ShipmentViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
     def list(self, request):
         """GET /api/shipments/"""
         db = get_db()
@@ -320,7 +319,9 @@ class ShipmentViewSet(BaseViewSet):
         ))
         return Response(serialize_mongodb_object(created_shipments))
 
-class KitViewSet(BaseViewSet):
+class KitViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
     def list(self, request):
         """GET /api/kits/"""
         db = get_db()
@@ -385,7 +386,9 @@ class KitViewSet(BaseViewSet):
             'iot_device': serialize_mongodb_object(iot_device)
         })
 
-class ParcelViewSet(BaseViewSet):
+class ParcelViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
     def list(self, request):
         """GET /api/parcels/"""
         db = get_db()
@@ -414,7 +417,9 @@ class ParcelViewSet(BaseViewSet):
         created_parcel = db.parcels.find_one({'_id': result.inserted_id})
         return Response(serialize_mongodb_object(created_parcel), status=status.HTTP_201_CREATED)
 
-class DeviceViewSet(BaseViewSet):
+class DeviceViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
     def list(self, request):
         db = get_db()
         manufacturer = request.query_params.get('manufacturer')
@@ -439,7 +444,9 @@ class DeviceViewSet(BaseViewSet):
         created_device = db.devices.find_one({'_id': result.inserted_id})
         return Response(serialize_mongodb_object(created_device), status=status.HTTP_201_CREATED)
 
-class IoTDeviceViewSet(BaseViewSet):
+class IoTDeviceViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
     def list(self, request):
         db = get_db()
         exists = request.query_params.get('exists')
